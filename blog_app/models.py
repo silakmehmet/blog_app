@@ -5,6 +5,10 @@ from django.contrib.auth.models import User
 class Category(models.Model):
     name = models.CharField(max_length=50)
 
+    class Meta:
+        verbose_name = "Category"
+        verbose_name_plural = "Categories"
+
     def __str__(self):
         return f"{self.name}"
 
@@ -40,7 +44,7 @@ class PostViews(models.Model):
         verbose_name = "Post Views"
         verbose_name_plural = "Post Views"
 
-    def __strt__(self):
+    def __str__(self):
         return f"Views by {self.user} on {self.blog}"
 
 
