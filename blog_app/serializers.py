@@ -13,7 +13,8 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class BlogSerializer(serializers.ModelSerializer):
-    category = CategorySerializer(read_only=True)
+    category = serializers.SlugRelatedField(
+        queryset=Category.objects.all(), slug_field='name')
     user = serializers.ReadOnlyField(source="user.username")
 
     class Meta:
@@ -29,7 +30,7 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = "__all__"
-        read_only_fields = ["id", "blog", "time_stamp", "updated_date"]
+        read_only_fields = ["id", "time_stamp", "updated_date"]
 
 
 class PostViewsSerializer(serializers.ModelSerializer):
@@ -39,7 +40,7 @@ class PostViewsSerializer(serializers.ModelSerializer):
     class Meta:
         model = PostViews
         fields = "__all__"
-        read_only_fields = ["id", "blog", "time_stamp"]
+        read_only_fields = ["id", "time_stamp"]
 
 
 class LikesSerializer(serializers.ModelSerializer):
@@ -49,4 +50,4 @@ class LikesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Likes
         fields = "__all__"
-        read_only_fields = ["id", "blog"]
+        read_only_fields = ["id"]
