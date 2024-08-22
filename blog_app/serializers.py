@@ -16,6 +16,12 @@ class BlogSerializer(serializers.ModelSerializer):
     category = serializers.SlugRelatedField(
         queryset=Category.objects.all(), slug_field='name')
     user = serializers.ReadOnlyField(source="user.username")
+    comments_count = serializers.IntegerField(
+        source='comment_blog.count', read_only=True)
+    likes_count = serializers.IntegerField(
+        source='like_blog.count', read_only=True)
+    post_views_count = serializers.IntegerField(
+        source='post_blog.count', read_only=True)
 
     class Meta:
         model = Blog
