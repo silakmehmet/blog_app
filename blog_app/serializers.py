@@ -19,7 +19,7 @@ class BlogSerializer(serializers.ModelSerializer):
     class Meta:
         model = Blog
         fields = "__all__"
-        read_only_fields = ["id", "category"]
+        read_only_fields = ["id", "category", "publish_date"]
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -29,7 +29,7 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = "__all__"
-        read_only_fields = ["id", "blog"]
+        read_only_fields = ["id", "blog", "time_stamp", "updated_date"]
 
 
 class PostViewsSerializer(serializers.ModelSerializer):
@@ -39,7 +39,7 @@ class PostViewsSerializer(serializers.ModelSerializer):
     class Meta:
         model = PostViews
         fields = "__all__"
-        read_only_fields = ["id", "blog"]
+        read_only_fields = ["id", "blog", "time_stamp"]
 
 
 class LikesSerializer(serializers.ModelSerializer):
