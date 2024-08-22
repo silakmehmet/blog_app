@@ -41,7 +41,7 @@ class PostViews(models.Model):
     time_stamp = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        verbose_name = "Post Views"
+        verbose_name = "Post View"
         verbose_name_plural = "Post Views"
 
     def __str__(self):
@@ -69,7 +69,7 @@ class Likes(models.Model):
     likes = models.BooleanField(default=False)
 
     class Meta:
-        verbose_name = "Likes"
+        verbose_name = "Like"
         verbose_name_plural = "Likes"
 
     def __str__(self):
