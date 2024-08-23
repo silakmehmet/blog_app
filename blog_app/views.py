@@ -5,7 +5,7 @@ from rest_framework.response import Response
 
 from .models import Category, Blog, PostViews, Comment, Likes
 from .serializers import CategorySerializer, BlogSerializer, UserBlogSerializer, PostViewsSerializer, CommentSerializer, LikesSerializer
-from .permissions import IsAdminOrReadOnly, IsOwnerOrAdminOrReadOnly
+from .permissions import IsAdminOrReadOnly, IsOwnerOrAdminOrReadOnly, IsOwnerOrReadOnly
 
 
 class CategoryMVS(ModelViewSet):
@@ -66,6 +66,7 @@ class PostViewsMVS(ModelViewSet):
 class CommentMVS(ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
+    permission_classes = [IsOwnerOrReadOnly]
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)

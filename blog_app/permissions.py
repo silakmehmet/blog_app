@@ -30,3 +30,20 @@ class IsOwnerOrAdminOrReadOnly(BasePermission):
 
         # Allowing other methods only if the user is the owner or an admin
         return bool(request.user and (request.user == obj.user or request.user.is_staff))
+
+
+class IsOwnerOrReadOnly(BasePermission):
+
+    def has_permission(self, request, view):
+        # Allowing all users to view the comments
+        if request.method == "GET":
+            return True
+        # Other operations require authentication
+        return request.user.is_authenticated
+
+    def has_object_permission(self, request, view, obj):
+        # Allowing all users to view the comments
+        if request.method == "GET":
+            return True
+        # Only the owner can edit or delete the comment
+        return obj.user == request.user
