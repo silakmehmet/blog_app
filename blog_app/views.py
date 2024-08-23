@@ -2,7 +2,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from .models import Category, Blog, PostViews, Comment, Likes
 from .serializers import CategorySerializer, BlogSerializer, PostViewsSerializer, CommentSerializer, LikesSerializer
-from .permissions import IsAdminOrReadOnly
+from .permissions import IsAdminOrReadOnly, IsOwnerOrAdminOrReadOnly
 
 
 class CategoryMVS(ModelViewSet):
@@ -14,6 +14,7 @@ class CategoryMVS(ModelViewSet):
 class BlogMVS(ModelViewSet):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
+    permission_classes = [IsOwnerOrAdminOrReadOnly]
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
