@@ -2,11 +2,13 @@ from rest_framework.viewsets import ModelViewSet
 
 from .models import Category, Blog, PostViews, Comment, Likes
 from .serializers import CategorySerializer, BlogSerializer, PostViewsSerializer, CommentSerializer, LikesSerializer
+from .permissions import IsAdminOrReadOnly
 
 
 class CategoryMVS(ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    permission_classes = [IsAdminOrReadOnly]
 
 
 class BlogMVS(ModelViewSet):
