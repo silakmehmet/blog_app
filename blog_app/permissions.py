@@ -15,14 +15,18 @@ class IsOwnerOrAdminOrReadOnly(BasePermission):
 
     def has_permission(self, request, view):
         # Allowing any user to do get operation
-        if request.method in "GET":
+        if request.method == "GET":
             return True
         # For other operations user must be logged in
         return bool(request.user and request.user.is_authenticated)
 
     def has_object_permission(self, request, view, obj):
-        # Allowing only get method even if the user logged in
-        if request.method in "GET":
-            return True
-        # Allowing any operations if the user is the owner or is_staff
+        if request.method == "GET":
+            # Allowing viewing published blogs for all users
+            if obj.status == 'p':
+                return True
+            # Allowing owners to view draft blogs
+            return request.user == obj.user
+
+        # Allowing other methods only if the user is the owner or an admin
         return bool(request.user and (request.user == obj.user or request.user.is_staff))

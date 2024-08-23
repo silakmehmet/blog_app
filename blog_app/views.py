@@ -19,6 +19,19 @@ class BlogMVS(ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_authenticated:
+            if user.is_staff:
+                # Admins see all blogs
+                return Blog.objects.all()
+            else:
+                # Regular users see their own drafts and published blogs
+                return Blog.objects.filter(user=user) | Blog.objects.filter(status='p')
+        else:
+            # Non-authenticated users see only published blogs
+            return Blog.objects.filter(status='p')
+
 
 class PostViewsMVS(ModelViewSet):
     queryset = PostViews.objects.all()
