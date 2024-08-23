@@ -1,7 +1,7 @@
 from rest_framework.viewsets import ModelViewSet
 
 from .models import Category, Blog, PostViews, Comment, Likes
-from .serializers import CategorySerializer, BlogSerializer, PostViewsSerializer, CommentSerializer, LikesSerializer
+from .serializers import CategorySerializer, BlogSerializer, UserBlogSerializer, PostViewsSerializer, CommentSerializer, LikesSerializer
 from .permissions import IsAdminOrReadOnly, IsOwnerOrAdminOrReadOnly
 
 
@@ -31,6 +31,11 @@ class BlogMVS(ModelViewSet):
         else:
             # Non-authenticated users see only published blogs
             return Blog.objects.filter(status='p')
+
+    def get_serializer_class(self):
+        if self.request.user.is_staff:
+            return UserBlogSerializer
+        return BlogSerializer
 
 
 class PostViewsMVS(ModelViewSet):

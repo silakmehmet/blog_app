@@ -28,6 +28,19 @@ class BlogSerializer(serializers.ModelSerializer):
         fields = "__all__"
         read_only_fields = ["id", "category", "publish_date"]
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Removing status field if the user is not admin
+        request = self.context.get('request')
+        if request and not request.user.is_staff:
+            self.fields.pop('status', None)
+
+
+class UserBlogSerializer(BlogSerializer):
+    class Meta(BlogSerializer.Meta):
+        fields = "__all__"
+
 
 class CommentSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source="user.username")
