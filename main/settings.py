@@ -142,3 +142,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ]
 }
+
+REST_AUTH = {
+    "TOKEN_SERIALIZER": "users.serializers.CustomTokenSerializer"
+}
