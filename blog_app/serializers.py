@@ -30,11 +30,10 @@ class BlogSerializer(serializers.ModelSerializer):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-        # Removing status field if the user is not admin
-        request = self.context.get('request')
+        # Removing status field
+        request = self.context.get("request")
         if request and not request.user.is_staff:
-            self.fields.pop('status', None)
+            self.fields.pop("status", None)
 
 
 class UserBlogSerializer(BlogSerializer):

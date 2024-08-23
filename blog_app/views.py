@@ -1,4 +1,7 @@
+from django.contrib.auth.models import User
+
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.response import Response
 
 from .models import Category, Blog, PostViews, Comment, Likes
 from .serializers import CategorySerializer, BlogSerializer, UserBlogSerializer, PostViewsSerializer, CommentSerializer, LikesSerializer
@@ -36,6 +39,20 @@ class BlogMVS(ModelViewSet):
         if self.request.user.is_staff:
             return UserBlogSerializer
         return BlogSerializer
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+
+        # Create a PostView entry when the blog detail is retrieved
+        if request.user.is_authenticated:
+            PostViews.objects.create(user=request.user, blog=instance)
+        else:
+            # Handling unauthenticated users
+            guest_user = User.objects.get_or_create(username='guest')[0]
+            PostViews.objects.create(user=guest_user, blog=instance)
+
+        return Response(serializer.data)
 
 
 class PostViewsMVS(ModelViewSet):
